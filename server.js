@@ -10,6 +10,7 @@ const PORT = process.env.PORT || 5000;
 
 app.use(cors({
   origin: 'https://theinfinitygadgets.com',
+   'https://laptopnationshop.com',
   methods: ['GET', 'POST'],
   allowedHeaders: ['Content-Type']
 }));
