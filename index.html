@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Test Contact Form</title>
+  <style>
+    body { font-family: Arial; max-width: 500px; margin: 40px auto; }
+    input, textarea, button { width: 100%; padding: 10px; margin: 10px 0; }
+    button { background-color: #007bff; color: white; border: none; cursor: pointer; }
+    button:hover { background-color: #0056b3; }
+    .message { margin-top: 15px; font-weight: bold; }
+  </style>
+</head>
+<body>
+  <h2>Contact Us</h2>
+  <form id="contactForm">
+    <input type="text" name="name" placeholder="Your Name" required />
+    <input type="email" name="email" placeholder="Your Email" required />
+    <textarea name="message" placeholder="Your Message" rows="5" required></textarea>
+    <button type="submit">Send</button>
+    <p id="responseMessage" class="message"></p>
+  </form>
+
+  <script>
+    document.getElementById('contactForm').addEventListener('submit', async function (e) {
+      e.preventDefault();
+      const formData = new FormData(this);
+      const data = {
+        name: formData.get('name'),
+        email: formData.get('email'),
+        message: formData.get('message')
+      };
+
+      try {
+        const res = await fetch('http://localhost:5000/contact', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(data)
+        });
+
+        const result = await res.json();
+        document.getElementById('responseMessage').innerText = result.message || result.error;
+      } catch (err) {
+        document.getElementById('responseMessage').innerText = 'Error sending message.';
+      }
+    });
+  </script>
+</body>
+</html>
