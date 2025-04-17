@@ -8,9 +8,19 @@ require('dotenv').config();
 const app = express();
 const PORT = process.env.PORT || 5000;
 
+const allowedOrigins = [
+  'https://theinfinitygadgets.com',
+  'https://laptopnationshop.com'
+];
+
 app.use(cors({
-  origin: 'https://theinfinitygadgets.com',
-   'https://laptopnationshop.com',
+  origin: function (origin, callback) {
+    if (!origin || allowedOrigins.includes(origin)) {
+      callback(null, true);
+    } else {
+      callback(new Error('Not allowed by CORS'));
+    }
+  },
   methods: ['GET', 'POST'],
   allowedHeaders: ['Content-Type']
 }));
